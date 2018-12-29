@@ -4,15 +4,18 @@ import util
 
 OUTPUT_PATH = 'output.png'
 
-def steg(path, msg): 
+
+
+def steg(img_path, msg_path): 
     # ========== convert image and message to binary ==========
-    img = Image.open(path)
+    img = Image.open(img_path)
+    with open(msg_path, 'r') as f:
+        msg = f.read()
     if not util.can_embed(img, msg):
         print('message too big')
         quit()
     img_bin = util.img2bin_list(img)
     msg_bin = util.str2bin_list(msg)
-    #print('msg', msg_bin[0]+msg_bin[1]+msg_bin[2]+msg_bin[3]+msg_bin[4]+msg_bin[5]+msg_bin[6]+msg_bin[7]+msg_bin[8]+msg_bin[9]+msg_bin[10]+msg_bin[11]+msg_bin[12])
 
     # ========== add header to message ==========
     msg_length = util.str2bin_list(str(len(msg)))                               # len(msg) -> 3/msg_length -> 0011011
@@ -30,10 +33,6 @@ def steg(path, msg):
             new_pixels.append(rgba)
 
     # ========== create new image ==========
-    #x = list(img.getdata())
-    #print('orig', x[0], x[1], x[2])
-    #print('new', new_pixels[0], new_pixels[1], new_pixels[2])
-    #print(new_pixels)
     new_img = Image.new('RGBA', img.size)
     new_img.putdata(new_pixels)
     new_img.save(OUTPUT_PATH)

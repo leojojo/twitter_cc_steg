@@ -11,6 +11,8 @@ USER = config.USER
 BASE_URL = config.BASE_URL
 IMG_PATH = config.IMG_PATH
 
+
+
 def get_twitter_elements(url, user):
     # ========== Headless Chrome実行 ========== #
     options = webdriver.ChromeOptions()
@@ -25,6 +27,8 @@ def get_twitter_elements(url, user):
     elements = driver.find_elements_by_class_name('stream')
     return elements
 
+
+
 # ========== 画像保存 ========== #
 def dl_tweet_img(elems, dir_path):
     for url in get_img_urls(elems):
@@ -37,6 +41,8 @@ def dl_tweet_img(elems, dir_path):
         else:
             print('HttpError:{0} at{1}'.format(r.status_code,url))
 
+
+
 # ========== 画像付きツイートのURLを探す ========== #
 def get_img_urls(elems):
     urls = []
@@ -45,6 +51,8 @@ def get_img_urls(elems):
         for div in divs:
             urls.append(div.get_attribute('data-image-url'))
     return urls
+
+
 
 # ========== 画像からテキストを抽出 ========== #
 def extract_txt(dir_path):
@@ -56,6 +64,8 @@ def extract_txt(dir_path):
             return secret_text
         except:
             print('Failed to extract from: {}'.format(path))
+
+
 
 def parse_txt(txt):
     parsed = txt.split('/')
@@ -71,6 +81,8 @@ def parse_txt(txt):
     else:
         print('Parse error')
         quit()
+
+
 
 def main():
     elements = get_twitter_elements(BASE_URL, USER)
