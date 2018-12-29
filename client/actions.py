@@ -11,7 +11,7 @@ def screenshot():
     return img
 
 def processes():
-    cmd = "ps o pid,uid,command"
+    cmd = 'ps o pid,uid,command'
     processes = subprocess.check_output(cmd, shell=True)
     return processes
 
@@ -22,6 +22,6 @@ def send_to_server(ip, port, data):
     s.send(b64)
     s.close()
 
-if __name__ == "__main__":
-    send_to_server("127.0.0.1", 8080, screenshot())
-    #send_to_server("127.0.0.1", 8080, processes())
+if __name__ == '__main__':
+    send_to_server('127.0.0.1', 8080, screenshot())
+    #send_to_server('127.0.0.1', 8080, processes())
