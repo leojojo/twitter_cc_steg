@@ -1,6 +1,6 @@
 from PIL import Image 
 import argparse, binascii
-import util
+import modules.util as util
 
 OUTPUT_PATH = 'output.png'
 
@@ -41,6 +41,7 @@ def steg(img_path, msg_path):
 
 
 def unsteg(path):
+    print(path)
     # ========== convert image to binary ==========
     img = Image.open(path)
     img_bin = util.img2bin_list(img)

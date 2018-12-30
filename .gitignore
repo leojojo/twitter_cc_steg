@@ -1,5 +1,6 @@
 .DS_Store
 config.py
+client/twitter_images/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -1,4 +1,4 @@
 chromedriver_binary==2.43.0
 requests==2.20.0
 selenium==3.141.0
-Pillow==5.3.0
+Pillow==5.2.0

